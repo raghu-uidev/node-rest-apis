@@ -1,8 +1,17 @@
 import express, { Request, Response } from 'express';
-import usersRegisterController from '../controllers/users.controller';
+import userController from '../controllers/users.controller';
 
 const userRoutes = express.Router();
 
-userRoutes.post('/register', usersRegisterController);
+
+
+// user registration API
+userRoutes.post('/register', userController.usersRegisterController);
+
+// user login API
+
+userRoutes.post('/login', userController.userLoginController);
+
+
 
 export default userRoutes;
