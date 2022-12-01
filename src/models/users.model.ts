@@ -18,9 +18,9 @@ const userRegiterModel = async (name: string, email: string, password: string, u
     });
 }
 
-const userLoginModel = async (userName: string, password: string) => {
-    let query = `select * from users where email='${userName}' and password='${password}';`;
-
+const userLoginModel = async (userName: string) => {
+    let query = `select * from users where email='${userName}';`;
+    
     return new Promise((resolve, reject) => {
         Connect().then((connection) => {
            Query(connection, query).then((result) => {
@@ -36,9 +36,29 @@ const userLoginModel = async (userName: string, password: string) => {
     });
 }
 
+
+const getUserByEmailModel = async (email: string) => {
+    let query = `select * from users where email='${email}';`;
+    return new Promise((resolve, reject) => {
+        Connect().then((connection) => {
+           Query(connection, query).then((result) => {
+               resolve(result);
+           }).catch((error) => {
+               reject(error);
+           }).finally(() => {
+              connection.end();
+           });
+        }).catch((error)=> {
+           reject(error);
+        });
+    });
+}
+
+
 const userModel = {
     userRegiterModel: userRegiterModel,
-    userLoginModel: userLoginModel
+    userLoginModel: userLoginModel,
+    getUserByEmailModel: getUserByEmailModel
 }
 
 export default userModel;
