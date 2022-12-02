@@ -3,6 +3,8 @@ import userService from '../services/users.service';
 
 const usersRegisterController = async (req: Request, res: Response) => {
     const {name, email, password} = req.body;
+    const userId = req.params.userId;
+    const isUserExists: boolean = Boolean(userId); 
     if(!password) {
        return res.status(400).send({message: 'Password not found'});
        
@@ -15,8 +17,12 @@ const usersRegisterController = async (req: Request, res: Response) => {
         return res.status(400).send({message: 'Email not found'}); 
     }
 
-    userService.userRegisterService(name, email, password).then((success) => {
-        return  res.status(200).send({message: 'User registered successfully'}); 
+    userService.userRegisterService(name, email, password, isUserExists, userId).then((success) => {
+        let responseMessage = {message: 'User registered successfully'};
+        if(isUserExists) {
+            responseMessage.message = 'User details updated successfully';
+        }
+        return  res.status(200).send(responseMessage); 
     }).catch((error) => {
         return  res.status(500).send(error); 
     });

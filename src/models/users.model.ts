@@ -1,8 +1,11 @@
 import { Connect, Query } from "../configs/mysql";
 
-const userRegiterModel = async (name: string, email: string, password: string, userId: string, cartId: string) => {
+const userRegisterModel = async (name: string, email: string, password: string, userId: string | undefined, cartId: string, isUserIdExists: boolean) => {
     let query = `insert into users (user_name, email, password, user_id, cart_id) values ('${name}', '${email}', '${password}', '${userId}', '${cartId}')`;
-
+    if(isUserIdExists) {
+        query = `update users set user_name = '${name}', email = '${email}', password = '${password}' where user_id='${userId}'`;
+    }
+    console.log(query);
     return new Promise((resolve, reject) => {
         Connect().then((connection) => {
            Query(connection, query).then((result) => {
@@ -56,7 +59,7 @@ const getUserByEmailModel = async (email: string) => {
 
 
 const userModel = {
-    userRegiterModel: userRegiterModel,
+    userRegisterModel: userRegisterModel,
     userLoginModel: userLoginModel,
     getUserByEmailModel: getUserByEmailModel
 }
