@@ -1,7 +1,7 @@
-const MYSQL_HOST = 'localhost';
-const MYSQL_DATABASE =  'ecommercedb';
-const MYSQL_USER =  'sqladmin';
-const MYSQL_PASS =  'start123';
+const MYSQL_HOST = 'sql.freedb.tech';
+const MYSQL_DATABASE =  'freedb_ecommercedb';
+const MYSQL_USER =  'freedb_sqladmin';
+const MYSQL_PASS =  'ZTNe%7bcVHb3&Sm';
 
 const MYSQL = {
     host: MYSQL_HOST,
@@ -20,7 +20,8 @@ const SERVER = {
 
 const config = {
     mysql: MYSQL,
-    server: SERVER
+    server: SERVER,
+    authSecretKey: 'wewew-434ed-sder-dddf3'
 };
 
 export default config;

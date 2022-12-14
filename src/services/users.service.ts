@@ -1,6 +1,8 @@
 import { v4 as uuidv4 } from 'uuid';
 import userModel from '../models/users.model';
 import {hash, compare} from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import config from '../configs/config';
 
 const userRegisterService = async (name: string, email: string, password: string, isUserIdExists: boolean, loginUserId?: string | undefined)=> {
     let userId: string | undefined = uuidv4();
@@ -35,11 +37,12 @@ const userLoginService = async (userName:string, password: string) => {
             const userId = result[0].user_id;
             const cartId = result[0].cart_id;
             const isPasswordMatched = await compare(password, encryptedPassword);
-            console.log('isPasswordMatched:'+ isPasswordMatched);
+            const token = jwt.sign({id: userId}, config.authSecretKey, {expiresIn: '2h'});
             if(isPasswordMatched){
                 resolve({
                   userId: userId,
-                  cartId: cartId
+                  cartId: cartId,
+                  token: token
                 });
             } else {
                 resolve({message: 'Invalid password for this username'});
